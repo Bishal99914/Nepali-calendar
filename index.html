@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="ne">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Nepali Calendar 2082</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <style>
+    body {
+      background-color: #f8f9fa;
+    }
+    .calendar-container {
+      max-width: 800px;
+      margin: auto;
+      margin-top: 50px;
+      background-color: white;
+      padding: 20px;
+      border-radius: 15px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+      margin-bottom: 40px;
+    }
+    .calendar-table th,
+    .calendar-table td {
+      text-align: center;
+      height: 60px;
+      vertical-align: middle;
+    }
+    .calendar-table td {
+      border: 1px solid #dee2e6;
+    }
+    .saturday {
+      background-color: #8B0000 !important; /* Dark red */
+      color: white !important;
+    }
+    .nepali-title {
+      font-weight: bold;
+      font-size: 1.5rem;
+      text-align: center;
+      margin-bottom: 20px;
+      color: #343a40;
+    }
+  </style>
+</head>
+<body>
+
+  <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+    <div class="container-fluid">
+      <a class="navbar-brand" href="#">Nepali Calendar 2082</a>
+    </div>
+  </nav>
+
+  <div class="container mt-4">
+    <div class="d-flex justify-content-between mb-3">
+      <button id="prevBtn" class="btn btn-outline-primary">अघिल्लो महिना</button>
+      <h3 id="monthTitle" class="text-center flex-grow-1">महिना</h3>
+      <button id="nextBtn" class="btn btn-outline-primary">अर्को महिना</button>
+    </div>
+    <div id="calendar" class="calendar-container"></div>
+  </div>
+
+  <footer class="text-center mt-4 mb-4 text-muted">
+    &copy; 2082 नेपाली पात्रो | Developed by Bishal
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+  <script>
+    const months = [
+      { name: "बैशाख", days: 31, startDay: 1 },
+      { name: "जेठ", days: 31, startDay: 4 },
+      { name: "असार", days: 32, startDay: 0 },
+      { name: "साउन", days: 31, startDay: 4 },
+      { name: "भदौ", days: 31, startDay: 0 },
+      { name: "आश्विन", days: 31, startDay: 3 },
+      { name: "कार्तिक", days: 30, startDay: 6 },
+      { name: "मंसिर", days: 29, startDay: 1 },
+      { name: "पुष", days: 30, startDay: 2 },
+      { name: "माघ", days: 29, startDay: 4 },
+      { name: "फागुन", days: 30, startDay: 5 },
+      { name: "चैत्र", days: 30, startDay: 0 }
+    ];
+
+    let currentMonthIndex = 0;
+    const calendarDiv = document.getElementById("calendar");
+    const monthTitle = document.getElementById("monthTitle");
+
+    function renderCalendar(index) {
+      const month = months[index];
+      const totalWeeks = Math.ceil((month.startDay + month.days) / 7);
+      let day = 1;
+
+      let html = `<div class="nepali-title">${month.name} 2082</div>
+        <table class="table table-bordered calendar-table">
+          <thead class="table-primary">
+            <tr>
+              <th>आइत</th>
+              <th>सोम</th>
+              <th>मंगल</th>
+              <th>बुध</th>
+              <th>बिही</th>
+              <th>शुक्र</th>
+              <th>शनि</th>
+            </tr>
+          </thead>
+          <tbody>`;
+
+      for (let i = 0; i < totalWeeks; i++) {
+        html += "<tr>";
+        for (let j = 0; j < 7; j++) {
+          if (i === 0 && j < month.startDay) {
+            html += "<td></td>";
+          } else if (day <= month.days) {
+            let cellClass = j === 6 ? "saturday" : "";
+            html += `<td class="${cellClass}">${day}</td>`;
+            day++;
+          } else {
+            html += "<td></td>";
+          }
+        }
+        html += "</tr>";
+      }
+
+      html += `</tbody></table>`;
+      calendarDiv.innerHTML = html;
+      monthTitle.textContent = `${month.name} 2082`;
+    }
+
+    document.getElementById("prevBtn").addEventListener("click", () => {
+      if (currentMonthIndex > 0) {
+        currentMonthIndex--;
+        renderCalendar(currentMonthIndex);
+      }
+    });
+
+    document.getElementById("nextBtn").addEventListener("click", () => {
+      if (currentMonthIndex < months.length - 1) {
+        currentMonthIndex++;
+        renderCalendar(currentMonthIndex);
+      }
+    });
+
+    renderCalendar(currentMonthIndex);
+  </script>
+</body>
+</html>
